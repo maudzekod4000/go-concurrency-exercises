@@ -46,7 +46,9 @@ func Crawl(url string, depth int, wg *sync.WaitGroup, limiter <-chan time.Time) 
 
 func main() {
 	var wg sync.WaitGroup
-	limiter := time.Tick(1 * time.Second)
+	ticker := time.NewTicker(1 * time.Second)
+	defer ticker.Stop()
+	limiter := ticker.C
 	wg.Add(1)
 	Crawl("http://golang.org/", 4, &wg, limiter)
 	wg.Wait()
